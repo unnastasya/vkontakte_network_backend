@@ -1,7 +1,6 @@
 const UserModel = require("../models/User.js");
 const bcrypt = require("bcrypt");
 
-
 const getMe = async (req, res) => {
 	try {
 		const user = await UserModel.findById(req.headers.authorization);
@@ -29,6 +28,8 @@ const registerUser = async (req, res) => {
 
 		const doc = new UserModel({
 			email: req.body.email,
+			name: req.body.name,
+			surname: req.body.surname,
 			fullName: req.body.fullName,
 			avatarUrl: req.body.avatarUrl,
 			city: req.body.city,
@@ -53,7 +54,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
 	try {
 		const user = await UserModel.findOne({ email: req.body.email });
-        console.log(user)
+		console.log(user);
 		if (!user) {
 			return res.status(404).send({
 				message: "Пользователь не найден",
@@ -72,7 +73,7 @@ const loginUser = async (req, res) => {
 		}
 
 		const { passwordHash, ...userData } = user._doc;
-        console.log(userData)
+		console.log(userData);
 		res.json(userData);
 	} catch (error) {
 		res.status(500).json({

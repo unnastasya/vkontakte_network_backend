@@ -6,6 +6,8 @@ const UserSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		name: { type: String, required: true },
+		surname: { type: String, required: true },
 		email: {
 			type: String,
 			required: true,
@@ -31,10 +33,9 @@ const UserSchema = mongoose.Schema(
 		birthdayDate: {
 			type: String,
 		},
-        age: {
-            type: Number
-        }
-        
+		age: {
+			type: Number,
+		},
 	},
 	{
 		timestamps: true,
