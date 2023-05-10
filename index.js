@@ -39,6 +39,10 @@ app.use(express.urlencoded());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
+app.get("/", (req, res) => {
+	res.json({ message: "server" });
+});
+
 app.post("/upload", upload.single("image"), (req, res) => {
 	res.json({
 		url: `/uploads/${req.file.originalname}`,
