@@ -23,10 +23,10 @@ mongoose
 	});
 
 const storage = multer.diskStorage({
-	destination: (_, __, cb) => {
+	destination: (req, file, cb) => {
 		cb(null, "uploads");
 	},
-	filename: (_, file, cb) => {
+	filename: (req, file, cb) => {
 		cb(null, file.originalname);
 	},
 });
@@ -34,6 +34,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const app = express();
+
+app.use(express.static(__dirname));
+
+app.use(multer({ storage: storageConfig }).single("filedata"));
+
+app.post("/upload", function (req, res, next) {
+	let filedata = req.file;
+	if (!filedata) res.send("Ошибка при загрузке файла");
+	else res.send("Файл загружен");
+});
 
 app.use(express.urlencoded());
 app.use(cors());
@@ -43,11 +53,11 @@ app.get("/", (req, res) => {
 	res.json({ message: "server" });
 });
 
-app.post("/upload", upload.single("image"), (req, res) => {
-	res.json({
-		url: `/uploads/${req.file.originalname}`,
-	});
-});
+// app.post("/upload", upload.single("image"), (req, res) => {
+// 	res.json({
+// 		url: `/uploads/${req.file.originalname}`,
+// 	});
+// });
 
 app.post("/uploadAvatar", upload.single("image"), (req, res) => {
 	res.json({

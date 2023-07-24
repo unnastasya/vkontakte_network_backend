@@ -4,7 +4,7 @@ const addChat = async (req, res) => {
 	console.log("add chat");
 
 	const newChat = new ChatModel({
-		members: [req.body.senderId, req.body.receiverTd],
+		members: [req.body.senderId, req.body.receiverId],
 	});
 
 	newChat
