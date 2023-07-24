@@ -42,27 +42,35 @@ app.use(multer({ storage: storageConfig }).single("filedata"));
 app.post("/upload", function (req, res, next) {
 	let filedata = req.file;
 	if (!filedata) res.send("Ошибка при загрузке файла");
-	else res.send("Файл загружен");
+	else {
+		res.json({
+			url: `/uploads/${req.file.originalname}`,
+		});
+	}
 });
 
 app.use(express.urlencoded());
 app.use(cors());
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
 	res.json({ message: "server" });
 });
 
 // app.post("/upload", upload.single("image"), (req, res) => {
-// 	res.json({
-// 		url: `/uploads/${req.file.originalname}`,
-// 	});
+// res.json({
+// 	url: `/uploads/${req.file.originalname}`,
+// });
 // });
 
-app.post("/uploadAvatar", upload.single("image"), (req, res) => {
-	res.json({
-		url: `/uploads/${req.file.originalname}`,
-	});
+app.post("/uploadAvatar", upload.single("image"), function (req, res, next) {
+	let filedata = req.file;
+	if (!filedata) res.send("Ошибка при загрузке файла");
+	else {
+		res.json({
+			url: `/uploads/${req.file.originalname}`,
+		});
+	}
 });
 
 app.get("/auth/me", UserController.getMe);
